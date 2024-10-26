@@ -2,8 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import pino from 'pino-http';
 import { env } from './utils/env.js';
+import * as contactServices from './services/contacts.js';
 
-export const startServer = () => {
+export const setupServer = () => {
   const app = express();
 
   app.use(cors());
@@ -13,11 +14,21 @@ export const startServer = () => {
     },
   });
 
-  app.get('/', (req, res) => {
+  app.get('/contacts', async (req, res) => {
+    const data = await contactServices.getContacts();
     res.json({
-      message: 'Start project',
+      status: 200,
+      message: 'Successfully found contacts!',
+      data,
     });
   });
+
+  // app.get('/contacts', (req, res) => {
+  //   res.json({
+  //     message: 'Start project',
+  //   });
+  // });
+
   app.use((req, res) => {
     res.status(404).json({
       message: `${req.url} not found`,
@@ -30,5 +41,5 @@ export const startServer = () => {
   });
 
   const port = Number(env('PORT', 3000));
-  app.listen(port, () => console.log(`Server running on ${port} PORT`));
+  app.listen(port, () => console.log(`Server is running on port ${port}`));
 };
