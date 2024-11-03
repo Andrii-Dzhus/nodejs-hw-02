@@ -10,4 +10,10 @@ contactsRouret.get(
   ctrlWrapper(contactsControllers.getContactsByIdController),
 );
 
+contactsRouret.post('/', ctrlWrapper(contactsControllers.addContactController));
+
+contactsRouret.patch(
+  '/:id',
+  ctrlWrapper(contactsControllers.patchContactController),
+);
 export default contactsRouret;

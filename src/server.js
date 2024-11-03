@@ -11,13 +11,9 @@ export const setupServer = () => {
   const app = express();
 
   app.use(cors());
-  // app.use(logger);
 
-  // app.get('/', (req, res) => {
-  //   res.json({
-  //     message: 'Start project',
-  //   });
-  // });
+  app.use(express.json());
+  // app.use(logger);
 
   app.use('/contacts', contactsRouret);
 
