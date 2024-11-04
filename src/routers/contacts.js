@@ -16,4 +16,9 @@ contactsRouret.patch(
   '/:id',
   ctrlWrapper(contactsControllers.patchContactController),
 );
+
+contactsRouret.delete(
+  '/:id',
+  ctrlWrapper(contactsControllers.deleteContactController),
+);
 export default contactsRouret;
