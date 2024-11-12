@@ -29,6 +29,17 @@ const contactSchema = new Schema(
   { versionKey: false, timestamps: true },
 );
 
+export const sortByList = [
+  '_id',
+  'name',
+  'phoneNumber',
+  'email',
+  'isFavourite',
+  'contactType',
+  'createdAt',
+  'updatedAt',
+];
+
 const ContactCollection = model('contacts', contactSchema);
 
 export default ContactCollection;

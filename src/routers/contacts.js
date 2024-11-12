@@ -6,34 +6,34 @@ import {
   contactAddSchema,
   contactUpdateSchema,
 } from '../validation/contacts.js';
-import { isValueId } from '../middlewares/isValidId.js';
+import { isValueId } from '../middlewares/isValueId.js';
 
-const contactsRouret = Router();
+const contactsRouter = Router();
 
-contactsRouret.get('/', ctrlWrapper(contactsControllers.getContactsController));
+contactsRouter.get('/', ctrlWrapper(contactsControllers.getContactsController));
 
-contactsRouret.get(
+contactsRouter.get(
   '/:id',
   isValueId,
   ctrlWrapper(contactsControllers.getContactsByIdController),
 );
 
-contactsRouret.post(
+contactsRouter.post(
   '/',
   validateBody(contactAddSchema),
   ctrlWrapper(contactsControllers.addContactController),
 );
 
-contactsRouret.patch(
+contactsRouter.patch(
   '/:id',
   isValueId,
   validateBody(contactUpdateSchema),
   ctrlWrapper(contactsControllers.patchContactController),
 );
 
-contactsRouret.delete(
+contactsRouter.delete(
   '/:id',
   isValueId,
   ctrlWrapper(contactsControllers.deleteContactController),
 );
-export default contactsRouret;
+export default contactsRouter;
