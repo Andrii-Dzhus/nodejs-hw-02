@@ -13,4 +13,11 @@ authRouter.post(
   validateBody(authRegisterSchema),
   ctrlWrapper(authControllers.registerController),
 );
+
+authRouter.post(
+  '/login',
+  validateBody(authRegisterSchema),
+  ctrlWrapper(authControllers.loginController),
+);
+
 export default authRouter;
