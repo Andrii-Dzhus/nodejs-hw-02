@@ -7,8 +7,11 @@ import {
   contactUpdateSchema,
 } from '../validation/contacts.js';
 import { isValueId } from '../middlewares/isValueId.js';
+import { authenticate } from '../middlewares/authenticate.js';
 
 const contactsRouter = Router();
+
+contactsRouter.use(authenticate);
 
 contactsRouter.get('/', ctrlWrapper(contactsControllers.getContactsController));
 
