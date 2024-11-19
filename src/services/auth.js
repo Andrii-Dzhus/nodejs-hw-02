@@ -20,15 +20,36 @@ const createSession = () => {
 };
 
 export const register = async (payload) => {
-  const { email, password } = payload;
-  const user = await UserCollection.findOne({ email });
+  const user = await UserCollection.findOne({ email: payload.email });
   if (user) {
     throw createHttpError(409, 'Email in use');
   }
 
-  const hashPassword = await bcrypt.hash(password, 10);
-  return UserCollection.create({ ...payload, password: hashPassword });
+  const hashPassword = await bcrypt.hash(payload.password, 10);
+
+  const newUser = await UserCollection.create({
+    ...payload,
+    password: hashPassword,
+  });
+
+  const userWithoutPassword = newUser.toObject();
+  delete userWithoutPassword.password;
+
+  return {
+    data: userWithoutPassword,
+  };
 };
+
+// export const register = async (payload) => {
+//   const user = await UserCollection.findOne({ email: payload.email });
+//   if (user) {
+//     throw createHttpError(409, 'Email in use');
+//   }
+
+//   const hashPassword = await bcrypt.hash(payload.password, 10);
+
+//   return await UserCollection.create({ ...payload, password: hashPassword });
+// };
 
 export const login = async ({ email, password }) => {
   const user = await UserCollection.findOne({ email });

@@ -8,12 +8,14 @@ import { sortByList } from '../db/models/contact.js';
 export const getContactsController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
   const { sortBy, sortOrder } = parseSortParams(req.query, sortByList);
+  const { _id: userId } = req.user;
 
   const data = await contactServices.getContacts({
     page,
     perPage,
     sortBy,
     sortOrder,
+    userId,
   });
 
   res.json({
@@ -25,11 +27,14 @@ export const getContactsController = async (req, res) => {
 
 export const getContactsByIdController = async (req, res) => {
   const { id } = req.params;
+  const { _id: userId } = req.user;
+
   const data = await contactServices.getContactById(id);
 
-  if (!data) {
-    throw createHttpError(404, `Contact not found`);
+  if (!data || data.userId.toString() !== userId.toString()) {
+    throw createHttpError(404, `Contact not found or not yours`);
   }
+
   res.json({
     status: 200,
     message: `Successfully found contact with id ${id}!`,
