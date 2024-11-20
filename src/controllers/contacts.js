@@ -4,18 +4,21 @@ import * as contactServices from '../services/contacts.js';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { sortByList } from '../db/models/contact.js';
+import { parseContactsFilterParams } from '../utils/parseContactsFilterParams.js';
 
 export const getContactsController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
   const { sortBy, sortOrder } = parseSortParams(req.query, sortByList);
+  const filter = parseContactsFilterParams(req.query);
   const { _id: userId } = req.user;
+  filter.userId = userId;
 
   const data = await contactServices.getContacts({
     page,
     perPage,
     sortBy,
     sortOrder,
-    userId,
+    filter,
   });
 
   res.json({
@@ -27,11 +30,9 @@ export const getContactsController = async (req, res) => {
 
 export const getContactsByIdController = async (req, res) => {
   const { id } = req.params;
-  const { _id: userId } = req.user;
-
   const data = await contactServices.getContactById(id);
 
-  if (!data || data.userId.toString() !== userId.toString()) {
+  if (!data) {
     throw createHttpError(404, `Contact not found or not yours`);
   }
 
@@ -55,6 +56,7 @@ export const addContactController = async (req, res) => {
 
 export const patchContactController = async (req, res) => {
   const { id: _id } = req.params;
+
   const result = await contactServices.updateContact({
     _id,
     payload: req.body,

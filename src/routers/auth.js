@@ -14,6 +14,8 @@ authRouter.post(
   ctrlWrapper(authControllers.registerController),
 );
 
+authRouter.post('/verify', ctrlWrapper(authControllers.verifyController));
+
 authRouter.post(
   '/login',
   validateBody(authLoginSchema),

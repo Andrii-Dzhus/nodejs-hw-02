@@ -4,6 +4,7 @@ import * as authServices from '../services/auth.js';
 
 const setupSession = (res, session) => {
   const { _id, refreshToken, refreshTokenValidUntil } = session;
+
   res.cookie('refreshToken', refreshToken, {
     httpOnly: true,
     expires: refreshTokenValidUntil,
@@ -22,6 +23,16 @@ export const registerController = async (req, res) => {
     status: 201,
     message: 'Successfully registered a user!',
     data: user,
+  });
+};
+
+export const verifyController = async (req, res) => {
+  const { token } = req.query;
+  await authServices.verify(token);
+
+  res.json({
+    status: 200,
+    message: 'User verify successfully',
   });
 };
 
