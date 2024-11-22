@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import createHttpError from 'http-errors';
 
 import { FIFTEEN_MINUTES, THIRTY_DAYS } from '../constants/index.js';
-import { SessionsCollection } from '../db/models/session.js';
+import { SessionsCollection } from '../db/models/Session.js';
 import { UsersCollection } from '../db/models/user.js';
 //
 export const registerUser = async (payload) => {
